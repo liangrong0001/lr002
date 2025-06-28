@@ -21,28 +21,28 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "latest"
+          node-version: '20'
 
       - name: Install dependencies
-        run: |
-          npm install -g javascript-obfuscator
+        run: npm install -g javascript-obfuscator
 
       - name: Clone BPB workjs
-        run: |
-          wget -O origin.js https://github.com/liangrong0001/date/blob/main/releases/download/worker.js
-
+        run: wget -O origin.js https://github.com/liangrong0001/date/blob/main/releases/download/worker.js
       - name: Obfuscate BPB worker js
         run: |
           javascript-obfuscator origin.js --output _worker.js \
-          --compact true \
-          --identifier-names-generator hexadecimal \
-          --rename-globals true \
-          --string-array true \
-          --string-array-encoding 'base64' \
-          --string-array-threshold 0.75 \
-          --transform-object-keys true \
-          --self-defending false \
-          --simplify true
+            --compact true \
+            --identifier-names-generator hexadecimal \
+            --rename-globals true \
+            --string-array true \
+            --string-array-encoding 'base64' \
+            --string-array-threshold 0.75 \
+            --transform-object-keys true \
+            --self-defending false \
+            --simplify true
+
+      - name: Move obfuscated file to target dir (optional)
+        run: mv _worker.js ./_worker.js
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
@@ -50,4 +50,3 @@ jobs:
           branch: main
           commit_message: ':arrow_up: update latest bpb panel'
           commit_author: 'github-actions[bot] <github-actions[bot]@users.noreply.github.com>'
-          push_options: '--set-upstream'
