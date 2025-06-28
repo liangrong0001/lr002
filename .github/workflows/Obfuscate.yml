@@ -2,10 +2,9 @@ name: Build Obfuscate BPB Panel
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   schedule:
-    - cron: "0 1 * * *"
+    - cron: "0 1 * * *"   # 每天 01:00 UTC 触发
 
 permissions:
   contents: write
@@ -15,54 +14,64 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out the code
+      # 1️⃣  拉取仓库
+      - name: 📥 Check out the code
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
+      # 2️⃣  安装 Node.js 20
+      - name: 🛠 Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: 20
 
-      - name: Install dependencies
-        run: npm install -g javascript-obfuscator
-             npm install --save-dev @babel/core @babel/cli @babel/preset-env babel-plugin-transform-remove-imports
+      # 3️⃣  安装全局/项目依赖
+      - name: 📦 Install dependencies
+        run: |
+          npm install -g javascript-obfuscator
+          npm install --save-dev @babel/core @babel/cli @babel/preset-env babel-plugin-transform-remove-imports
 
+      # 4️⃣  下载源 worker 文件（改为 GitHub Raw 链接）
+      - name: ⬇️  Download BPB worker.js
+        run: |
+          curl -L -o origin.js https://raw.githubusercontent.com/liangrong0001/date/main/worker.js
 
-      - name: Clone BPB workjs
-        run: wget -O origin.js https://github.com/liangrong0001/date/blob/main/releases/download/worker.js
+      # 5️⃣  生成 .babelrc（移除 cloudflare:sockets 的 import）
+      - name: 📝 Create .babelrc
+        run: |
+          cat > .babelrc <<'EOF'
+          {
+            "presets": ["@babel/preset-env"],
+            "plugins": [
+              ["transform-remove-imports", { "test": "cloudflare:sockets" }]
+            ]
+          }
+          EOF
 
-        - name: a
-  run: {
-  "presets": ["@babel/preset-env"],
-  "plugins": [
-    ["transform-remove-imports", {
-      "test": "cloudflare:sockets"
-    }]
-  ]
-}
-  
-      - name: Obfuscate BPB worker js
+      # 6️⃣  Babel 转译 + Obfuscator 混淆
+      - name: 🔒 Transpile & Obfuscate
         run: |
           npx babel origin.js --out-file compiled.js
 
-          javascript-obfuscator compiled.js --output _worker.js
-
+          npx javascript-obfuscator compiled.js \
+            --output _worker.js \
             --compact true \
             --identifier-names-generator hexadecimal \
             --rename-globals true \
             --string-array true \
-            --string-array-encoding 'base64' \
+            --string-array-encoding base64 \
             --string-array-threshold 0.75 \
             --transform-object-keys true \
             --self-defending false \
             --simplify true
 
-      - name: Move obfuscated file to target dir (optional)
+      # 7️⃣  （可选）把生成文件放到仓库根目录/指定目录
+      - name: 🚚 Move obfuscated file to root
         run: mv _worker.js ./_worker.js
 
-      - name: Commit changes
+      # 8️⃣  提交修改
+      - name: 🆙 Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           branch: main
-          commit_message: ':arrow_up: update latest bpb panel'
-          commit_author: 'github-actions[bot] <github-actions[bot]@users.noreply.github.com>'
+          commit_message: ":arrow_up: update latest bpb panel"
+          commit_author: "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
