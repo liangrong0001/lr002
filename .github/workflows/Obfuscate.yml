@@ -66,7 +66,7 @@ jobs:
 
       # 7️⃣  （可选）把生成文件放到仓库根目录/指定目录
       - name: 🚚 Move obfuscated file to root
-        run: mv _worker.js ./_worker.js
+      
 
       # 8️⃣  提交修改
       - name: 🆙 Commit changes
