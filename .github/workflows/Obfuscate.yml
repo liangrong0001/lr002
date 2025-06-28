@@ -25,12 +25,25 @@ jobs:
 
       - name: Install dependencies
         run: npm install -g javascript-obfuscator
+             npm install --save-dev @babel/core @babel/cli @babel/preset-env babel-plugin-transform-remove-imports
+{
+  "presets": ["@babel/preset-env"],
+  "plugins": [
+    ["transform-remove-imports", {
+      "test": "cloudflare:sockets"
+    }]
+  ]
+}
+
 
       - name: Clone BPB workjs
         run: wget -O origin.js https://github.com/liangrong0001/date/blob/main/releases/download/worker.js
       - name: Obfuscate BPB worker js
         run: |
-          javascript-obfuscator origin.js --output _worker.js \
+          npx babel origin.js --out-file compiled.js
+
+          javascript-obfuscator compiled.js --output _worker.js
+
             --compact true \
             --identifier-names-generator hexadecimal \
             --rename-globals true \
