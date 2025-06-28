@@ -64,8 +64,6 @@ jobs:
             --self-defending false \
             --simplify true
 
-      # 7️⃣  （可选）把生成文件放到仓库根目录/指定目录
-      - name: 🚚 Move obfuscated file to root
       
 
       # 8️⃣  提交修改
