@@ -30,6 +30,17 @@ jobs:
 
       - name: Clone BPB workjs
         run: wget -O origin.js https://github.com/liangrong0001/date/blob/main/releases/download/worker.js
+
+        - name: a
+  run: {
+  "presets": ["@babel/preset-env"],
+  "plugins": [
+    ["transform-remove-imports", {
+      "test": "cloudflare:sockets"
+    }]
+  ]
+}
+  
       - name: Obfuscate BPB worker js
         run: |
           npx babel origin.js --out-file compiled.js
