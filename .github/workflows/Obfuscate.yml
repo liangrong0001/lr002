@@ -30,7 +30,8 @@ jobs:
 
       - name: Download and extract latest BPB worker
         run: |
-          wget https://github.com/liangrong0001/date/blob/main/worker.js
+          wget https://github.com/liangrong0001/date/blob/main/worker.zip
+          unzip -o worker.zip
           mv _worker.js origin.js
 
       - name: Obfuscate BPB worker js
