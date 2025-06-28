@@ -1,4 +1,4 @@
-npm install javascript-obfuscator -g
+npm install -g javascript-obfuscator
 wget https://github.com/liangrong0001/date/blob/main/worker.js
 javascript-obfuscator worker.js -output work.js
           
