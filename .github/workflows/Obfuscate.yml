@@ -1,14 +1,4 @@
-
-      - name: Install dependencies
-        run: |
-          npm install -g javascript-obfuscator
-        
-      - name: Download and extract latest BPB worker
-        run: |
-          wget https://github.com/liangrong0001/date/blob/main/worker.js
-         
-
-      - name: Obfuscate BPB worker js
-        run: |
-          javascript-obfuscator worker.js
+npm install javascript-obfuscator -g
+wget https://github.com/liangrong0001/date/blob/main/worker.js
+javascript-obfuscator worker.js -output work.js
           
