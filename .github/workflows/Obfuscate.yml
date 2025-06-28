@@ -26,14 +26,6 @@ jobs:
       - name: Install dependencies
         run: npm install -g javascript-obfuscator
              npm install --save-dev @babel/core @babel/cli @babel/preset-env babel-plugin-transform-remove-imports
-{
-  "presets": ["@babel/preset-env"],
-  "plugins": [
-    ["transform-remove-imports", {
-      "test": "cloudflare:sockets"
-    }]
-  ]
-}
 
 
       - name: Clone BPB workjs
