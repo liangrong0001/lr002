@@ -2,7 +2,7 @@
   "devDependencies": {
     "@babel/cli": "^7.28.6",
     "@babel/core": "^7.29.0",
-    "@babel/preset-env": "^7.29.2",
+    "@babel/preset-env": "^7.29.3",
     "babel-plugin-transform-remove-imports": "^1.8.1"
   }
 }
