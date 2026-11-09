@@ -3,6 +3,6 @@
     "@babel/cli": "^7.29.7",
     "@babel/core": "^7.29.13",
     "@babel/preset-env": "^7.29.7",
-    "babel-plugin-transform-remove-imports": "^1.8.1"
+    "babel-plugin-transform-remove-imports": "^1.8.2"
   }
 }
